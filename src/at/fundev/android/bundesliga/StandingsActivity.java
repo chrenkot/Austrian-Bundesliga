@@ -145,6 +145,8 @@ public class StandingsActivity extends FragmentActivity {
 	
 	private static final String ERSTELIGA_STANDINGS = "index.php?id=570";
 	
+	private static final String ROUND = "&round=%s";
+	
 	public static final String BUNDESLIGA_URL = "http://www.bundesliga.at/";
 	
 	private static final String BUNDESLIGA_TAG = "bundesliga";
@@ -161,6 +163,8 @@ public class StandingsActivity extends FragmentActivity {
 	
 	private Dialog mRetryDialog;
 	
+	private Dialog mRoundDialog;
+	
 	private boolean mIsFetching;
 	
 	private boolean mIsInitialized;
@@ -169,8 +173,11 @@ public class StandingsActivity extends FragmentActivity {
 	
 	private ArrayList<StandingsItem> mErsteLigaItems;
 	
+	private String mRound = "0";
+	
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) 
+    {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.standings_activity);
@@ -190,23 +197,27 @@ public class StandingsActivity extends FragmentActivity {
         if (savedInstanceState != null) {
         	mBundesligaItems = savedInstanceState.getParcelableArrayList(BUNDESLIGA_TAG);
             mErsteLigaItems = savedInstanceState.getParcelableArrayList(ERSTELIGA_TAG);
+            mRound = savedInstanceState.getString(ROUND);
             mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
         }
         
-        buildDialog();
+        buildDialogs();
         
         fetchOrSet();
      }
     
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState)
+    {
         super.onSaveInstanceState(outState);
-        outState.putString("tab", mTabHost.getCurrentTabTag());
         outState.putParcelableArrayList(BUNDESLIGA_TAG, mBundesligaItems);
         outState.putParcelableArrayList(ERSTELIGA_TAG, mErsteLigaItems);
+        outState.putString(ROUND, mRound);
+        outState.putString("tab", mTabHost.getCurrentTabTag());
     }
     
-    private void fetchOrSet() {
+    private void fetchOrSet()
+    {
     	if(mTabManager.mLastTab.tag.equals(BUNDESLIGA_TAG))
         	if(mBundesligaItems == null)
         		fetchInformation();
@@ -224,11 +235,14 @@ public class StandingsActivity extends FragmentActivity {
     	if(!mIsFetching)
     	{
     		mIsFetching = true;
+    		
+    		String round = String.format(ROUND, mRound);
+    		
     		PageFetcherTask fetcher = new PageFetcherTask();
     		if(mTabManager.mLastTab.tag.equals(BUNDESLIGA_TAG))
-    			fetcher.execute(BUNDESLIGA_URL + BUNDESLIGA_STANDINGS);
+    			fetcher.execute(BUNDESLIGA_URL + BUNDESLIGA_STANDINGS + round);
     		else
-    			fetcher.execute(BUNDESLIGA_URL + ERSTELIGA_STANDINGS);
+    			fetcher.execute(BUNDESLIGA_URL + ERSTELIGA_STANDINGS + round);
     	}
     }
     
@@ -237,13 +251,14 @@ public class StandingsActivity extends FragmentActivity {
     	if(mTabManager.mLastTab.fragment != null)
     	{
     		if(mTabManager.mLastTab.tag.equals(BUNDESLIGA_TAG))
-    			((StandingsFragment)mTabManager.mLastTab.fragment).setItems(mBundesligaItems, force);
+    			((StandingsFragment)mTabManager.mLastTab.fragment).setItems(mBundesligaItems, force, mRound);
     		else
-    			((StandingsFragment)mTabManager.mLastTab.fragment).setItems(mErsteLigaItems, force);
+    			((StandingsFragment)mTabManager.mLastTab.fragment).setItems(mErsteLigaItems, force, mRound);
     	}
     }
     
-    private void buildDialog() {
+    private void buildDialogs()
+    {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		String dlgTitle = getString(R.string.dlgTitle);
 		String dlgText = getString(R.string.dlgText);
@@ -267,6 +282,24 @@ public class StandingsActivity extends FragmentActivity {
 		});
 
 		mRetryDialog = builder.create();
+		
+		final CharSequence[] items = {"1","2","3","4","5","6","7","8","9","10",
+										"11","12","13","14","15","16","17","18","19","20",
+											"21","22","23","24","25","26","27","28","29","30",
+												"31","32","33","34","35","36"};
+		
+		builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.selectRound);
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				mRound = items[which].toString();
+				fetchInformation();
+			}
+		});
+		
+		mRoundDialog = builder.create();
 	}
     
     @Override
@@ -280,8 +313,12 @@ public class StandingsActivity extends FragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 	        case R.id.standings_refresh:
+	        	mRound = "0";
 	        	fetchInformation();
 	            return true;
+	        case R.id.standings_round:
+	        	mRoundDialog.show();
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
         }

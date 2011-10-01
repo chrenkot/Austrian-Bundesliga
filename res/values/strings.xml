@@ -16,4 +16,6 @@
     <string name="lose">L</string>
     <string name="goalsDiff">GD</string>
     <string name="goals">Goals</string>
+    <string name="round">Round</string>
+    <string name="selectRound">Select a round</string>
 </resources>

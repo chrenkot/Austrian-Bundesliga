@@ -5,4 +5,8 @@
     	android:id="@+id/standings_refresh"
     	android:icon="@drawable/ic_menu_refresh"
      	android:title="@string/reload" />
+    <item 
+    	android:id="@+id/standings_round"
+    	android:icon="@drawable/ic_menu_today"
+     	android:title="@string/round" />
 </menu>

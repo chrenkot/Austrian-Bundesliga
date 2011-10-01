@@ -10,13 +10,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import at.fundev.android.bundesliga.data.StandingsItem;
 import at.fundev.android.bundesliga.ui.StandingsAdapter;
 
 public class StandingsFragment extends ListFragment {
 
-	protected StandingsItem[] items;
+	private StandingsItem[] mItems;
 	
+	private String mRound;
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		
+		setRound(view);
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -31,16 +41,31 @@ public class StandingsFragment extends ListFragment {
 		startActivity(browserIntent);
 	}
 
-	protected void setItems(ArrayList<StandingsItem> items, boolean force) {
-		if(this.items == null || force)
+	protected void setItems(ArrayList<StandingsItem> items, boolean force, String round) {
+		if(this.mItems == null || force)
 		{
-			this.items = new StandingsItem[10];
+			mRound = round;
 			
-			items.toArray(this.items);
+			setRound(getView());
 			
-			setListAdapter(new StandingsAdapter(getActivity(), R.layout.standings_item, this.items));
+			this.mItems = new StandingsItem[10];
+			
+			items.toArray(this.mItems);
+			
+			setListAdapter(new StandingsAdapter(getActivity(), R.layout.standings_item, this.mItems));
 		}
 		
 		return;
+	}
+	
+	private void setRound(View view) {
+		if(view != null) {
+			TextView lblRound = (TextView) view.findViewById(R.id.lblRound);
+			
+			if(mRound == null || mRound.equals("0"))
+	    		lblRound.setText("");
+	    	else
+	    		lblRound.setText(getString(R.string.round) + " " + mRound);
+		}
 	}
 }

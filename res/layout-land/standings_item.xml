@@ -27,7 +27,7 @@
 			android:layout_height="wrap_content"
 			android:textSize="20sp"
 			android:gravity="right"
-			android:paddingRight="210sp"
+			android:paddingRight="230sp"
 			android:layout_alignParentRight="true"/>
     <TextView 
 			android:id="@+id/lblWins"
@@ -35,7 +35,7 @@
 			android:layout_height="wrap_content"
 			android:textSize="20sp"
 			android:gravity="right"
-			android:paddingRight="180sp"
+			android:paddingRight="200sp"
 			android:layout_alignParentRight="true"/>
 	<TextView 
 			android:id="@+id/lblDraws"
@@ -43,7 +43,7 @@
 			android:layout_height="wrap_content"
 			android:textSize="20sp"
 			android:gravity="right"
-			android:paddingRight="150sp"
+			android:paddingRight="170sp"
 			android:layout_alignParentRight="true"/>
 	<TextView 
 			android:id="@+id/lblDefeats"
@@ -51,7 +51,7 @@
 			android:layout_height="wrap_content"
 			android:textSize="20sp"
 			android:gravity="right"
-			android:paddingRight="120sp"
+			android:paddingRight="140sp"
 			android:layout_alignParentRight="true"/>
 	<TextView 
 			android:id="@+id/lblGoalsScored"
@@ -59,7 +59,7 @@
 			android:layout_height="wrap_content"
 			android:textSize="20sp"
 			android:gravity="right"
-			android:paddingRight="90sp"
+			android:paddingRight="105sp"
 			android:layout_alignParentRight="true"/>
 	<TextView 
 			android:id="@+id/lblGoalsSeperator"
@@ -67,7 +67,7 @@
 			android:layout_height="wrap_content"
 			android:textSize="20sp"
 			android:gravity="right"
-			android:paddingRight="80sp"
+			android:paddingRight="95sp"
 			android:layout_alignParentRight="true"
 			android:text=":"/>
 	<TextView 
@@ -76,7 +76,7 @@
 			android:layout_height="wrap_content"
 			android:textSize="20sp"
 			android:gravity="right"
-			android:paddingRight="60sp"
+			android:paddingRight="70sp"
 			android:layout_alignParentRight="true"/>
 	<TextView 
 			android:id="@+id/lblGoalsDiff"

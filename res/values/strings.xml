@@ -8,7 +8,12 @@
     <string name="dlgText">There was an error fetching the required information from the internet. Try again?</string>
     <string name="dlgRetry">Retry</string>
     <string name="dlgCancel">Cancel</string>
-    <string name="games">Pld</string>
-    <string name="points">Pts</string>
+    <string name="games">P</string>
+    <string name="points">PTS</string>
     <string name="reload">Reload</string>
+    <string name="wins">W</string>
+    <string name="draws">D</string>
+    <string name="lose">L</string>
+    <string name="goalsDiff">GD</string>
+    <string name="goals">Goals</string>
 </resources>

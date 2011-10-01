@@ -9,4 +9,9 @@
     <string name="games">Sp.</string>
     <string name="points">P</string>
     <string name="reload">Neu laden</string>
+    <string name="wins">S</string>
+    <string name="draws">U</string>
+    <string name="lose">N</string>
+    <string name="goalsDiff">Dif</string>
+    <string name="goals">Tore</string>
 </resources>

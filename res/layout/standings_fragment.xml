@@ -22,8 +22,7 @@
     		android:layout_width="wrap_content"
     		android:text="@string/points"
     		android:gravity="right"
-    		android:layout_alignParentRight="true"
-    		android:paddingRight="6sp"/>
+    		android:layout_alignParentRight="true"/>
   		<View 
 		 	android:id="@+id/hrLine"
 		  	android:layout_width="fill_parent"

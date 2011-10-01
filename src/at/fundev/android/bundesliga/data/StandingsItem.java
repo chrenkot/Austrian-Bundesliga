@@ -1,27 +1,30 @@
 package at.fundev.android.bundesliga.data;
 
-public class StandingsItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class StandingsItem implements Parcelable {
 	
-	private Integer position = null;
+	private int position = -1;
 	
 	private String name = null;
 	
-	private Integer wins = null;
+	private int wins = -1;
 	
-	private Integer draws = null;
+	private int draws = -1;
 	
-	private Integer defeats = null;
+	private int defeats = -1;
 	
-	private Integer goalsScored = null;
+	private int goalsScored = -1;
 	
-	private Integer goalsAgainst = null;
+	private int goalsAgainst = -1;
 	
 	private String teamLink = null;
-
+	
 	/**
 	 * @return the position
 	 */
-	public Integer getPosition() {
+	public int getPosition() {
 		return position;
 	}
 
@@ -35,56 +38,56 @@ public class StandingsItem {
 	/**
 	 * @return the wins
 	 */
-	public Integer getWins() {
+	public int getWins() {
 		return wins;
 	}
 
 	/**
 	 * @return the draws
 	 */
-	public Integer getDraws() {
+	public int getDraws() {
 		return draws;
 	}
 
 	/**
 	 * @return the defeats
 	 */
-	public Integer getDefeats() {
+	public int getDefeats() {
 		return defeats;
 	}
 
 	/**
 	 * @return the games
 	 */
-	public Integer getGames() {
+	public int getGames() {
 		return wins + draws + defeats;
 	}
 
 	/**
 	 * @return the goalsScored
 	 */
-	public Integer getGoalsScored() {
+	public int getGoalsScored() {
 		return goalsScored;
 	}
 
 	/**
 	 * @return the goalsAgainst
 	 */
-	public Integer getGoalsAgainst() {
+	public int getGoalsAgainst() {
 		return goalsAgainst;
 	}
 
 	/**
 	 * @return the goalsDiff
 	 */
-	public Integer getGoalsDiff() {
+	public int getGoalsDiff() {
 		return goalsScored - goalsAgainst;
 	}
 
 	/**
 	 * @return the points
 	 */
-	public Integer getPoints() {
+	public int getPoints() {
 		return wins * 3 + draws;
 	}
 
@@ -98,7 +101,7 @@ public class StandingsItem {
 	/**
 	 * @param position the position to set
 	 */
-	public void setPosition(Integer position) {
+	public void setPosition(int position) {
 		this.position = position;
 	}
 
@@ -112,35 +115,35 @@ public class StandingsItem {
 	/**
 	 * @param wins the wins to set
 	 */
-	public void setWins(Integer wins) {
+	public void setWins(int wins) {
 		this.wins = wins;
 	}
 
 	/**
 	 * @param draws the draws to set
 	 */
-	public void setDraws(Integer draws) {
+	public void setDraws(int draws) {
 		this.draws = draws;
 	}
 
 	/**
 	 * @param defeats the defeats to set
 	 */
-	public void setDefeats(Integer defeats) {
+	public void setDefeats(int defeats) {
 		this.defeats = defeats;
 	}
 
 	/**
 	 * @param goalsScored the goalsScored to set
 	 */
-	public void setGoalsScored(Integer goalsScored) {
+	public void setGoalsScored(int goalsScored) {
 		this.goalsScored = goalsScored;
 	}
 
 	/**
 	 * @param goalsAgainst the goalsAgainst to set
 	 */
-	public void setGoalsAgainst(Integer goalsAgainst) {
+	public void setGoalsAgainst(int goalsAgainst) {
 		this.goalsAgainst = goalsAgainst;
 	}
 
@@ -149,5 +152,47 @@ public class StandingsItem {
 	 */
 	public void setTeamLink(String teamLink) {
 		this.teamLink = teamLink;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		out.writeInt(position);
+		out.writeString(name);
+		out.writeInt(wins);
+		out.writeInt(draws);
+		out.writeInt(defeats);
+		out.writeInt(goalsScored);
+		out.writeInt(goalsAgainst);
+		out.writeString(teamLink);
+	}
+	
+	public static final Parcelable.Creator<StandingsItem> CREATOR = new Parcelable.Creator<StandingsItem>() {
+		public StandingsItem createFromParcel(Parcel in) {
+		    return new StandingsItem(in);
+		}
+
+		public StandingsItem[] newArray(int size) {
+		    return new StandingsItem[size];
+		}
+	};
+
+	private StandingsItem(Parcel in) {
+		position = in.readInt();
+		name = in.readString();
+		wins = in.readInt();
+		draws = in.readInt();
+		defeats = in.readInt();
+		goalsScored = in.readInt();
+		goalsAgainst = in.readInt();
+		teamLink = in.readString();
+	}
+	
+	public StandingsItem() {
+		
 	}
 }

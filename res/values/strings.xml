@@ -10,4 +10,5 @@
     <string name="dlgCancel">Cancel</string>
     <string name="games">Pld</string>
     <string name="points">Pts</string>
+    <string name="reload">Reload</string>
 </resources>

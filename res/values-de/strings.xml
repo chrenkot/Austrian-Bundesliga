@@ -8,4 +8,5 @@
     <string name="dlgCancel">Abbrechen</string>
     <string name="games">Sp.</string>
     <string name="points">P</string>
+    <string name="reload">Neu laden</string>
 </resources>

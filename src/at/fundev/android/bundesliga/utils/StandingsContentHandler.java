@@ -27,7 +27,7 @@ public class StandingsContentHandler implements ContentHandler {
 		switch(current) {
 		
 			case POSITION:
-				if(standingsItem.getPosition() == null)
+				if(standingsItem.getPosition() == -1)
 					standingsItem.setPosition(getNumber(ch, start, length));
 				break;
 				
@@ -37,27 +37,27 @@ public class StandingsContentHandler implements ContentHandler {
 				break;
 				
 			case WINS:
-				if(standingsItem.getWins() == null)
+				if(standingsItem.getWins() == -1)
 					standingsItem.setWins(getNumber(ch, start, length));
 				break;
 				
 			case DRAWS:
-				if(standingsItem.getDraws() == null)
+				if(standingsItem.getDraws() == -1)
 					standingsItem.setDraws(getNumber(ch, start, length));
 				break;
 				
 			case DEFEATS:
-				if(standingsItem.getDefeats() == null)
+				if(standingsItem.getDefeats() == -1)
 					standingsItem.setDefeats(getNumber(ch, start, length));
 				break;
 				
 			case GOALSSCORED:
-				if(standingsItem.getGoalsScored() == null)
+				if(standingsItem.getGoalsScored() == -1)
 					standingsItem.setGoalsScored(getNumber(ch, start, length));
 				break;
 				
 			case GOALSAGAINST:
-				if(standingsItem.getGoalsAgainst() == null)
+				if(standingsItem.getGoalsAgainst() == -1)
 					standingsItem.setGoalsAgainst(getNumber(ch, start, length));
 				break;
 				
@@ -165,11 +165,11 @@ public class StandingsContentHandler implements ContentHandler {
 					
 				case GOALSDIFF:
 					current = StandingsEnum.POINTS;
+					standingsItems.add(standingsItem);
 					break;
 					
 				case POINTS:
 					current = StandingsEnum.POSITION;
-					standingsItems.add(standingsItem);
 					standingsItem = new StandingsItem();
 					break;
 					

@@ -8,22 +8,23 @@
   		android:id="@+id/rlHeader"
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content">
+    	<TextView 
+    		android:id="@+id/lblGames"
+    		android:layout_height="wrap_content"
+    		android:layout_width="wrap_content"
+    		android:text="@string/games"
+    		android:gravity="right"
+    		android:layout_alignParentRight="true"
+    		android:paddingRight="30sp"/>
   		<TextView 
     		android:id="@+id/lblPoints"
     		android:layout_height="wrap_content"
     		android:layout_width="wrap_content"
-    		android:textStyle="bold"
     		android:text="@string/points"
     		android:gravity="right"
-    		android:layout_alignParentRight="true"/>
-  		<TextView 
-    		android:id="@+id/lblGames"
-    		android:layout_height="wrap_content"
-    		android:layout_width="wrap_content"
-    		android:textStyle="bold"
-    		android:text="@string/games"
-    		android:layout_toLeftOf="@id/lblPoints"/>
-    	<View 
+    		android:layout_alignParentRight="true"
+    		android:paddingRight="6sp"/>
+  		<View 
 		 	android:id="@+id/hrLine"
 		  	android:layout_width="fill_parent"
 		 	android:layout_height="1px"

@@ -3,33 +3,32 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
   	android:orientation="horizontal"
   	android:layout_width="fill_parent"
-  	android:layout_height="fill_parent">
+  	android:layout_height="fill_parent"
+  	android:paddingTop="5sp"
+    android:paddingBottom="5sp">
   	<TextView
   			android:id="@+id/lblPosition"
     		android:layout_width="wrap_content"
     		android:layout_height="wrap_content"
     		android:gravity="left"
+    		android:layout_alignParentLeft="true"
     		android:textSize="20sp"/>
-    <ImageView
-    		android:id="@+id/imgLogo"
-    		android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:layout_centerVertical="true"
-    		android:layout_toRightOf="@id/lblPosition"/>
     <TextView
     		android:id="@+id/lblName"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_toRightOf="@id/imgLogo"
-			android:textSize="20sp"/>
+			android:gravity="left"
+    		android:layout_alignParentLeft="true"
+    		android:textSize="20sp"
+    		android:paddingLeft="30sp"/>
     <TextView
     		android:id="@+id/lblGames"
     		android:layout_width="wrap_content"
     		android:layout_height="wrap_content"
-    		android:layout_toLeftOf="@id/lblPoints"
     		android:textSize="20sp"
-    		android:paddingRight="3sp"
-    		android:gravity="right"/>
+    		android:gravity="right"
+    		android:paddingRight="5sp"
+    		android:layout_toLeftOf="@id/lblPoints"/>
     <TextView
     		android:id="@+id/lblPoints"
 			android:layout_width="wrap_content"
@@ -37,4 +36,40 @@
 			android:textSize="20sp"
 			android:gravity="right"
 			android:layout_alignParentRight="true"/>
+			
+	<TextView 
+			android:id="@+id/lblWins"
+			android:visibility="gone"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<TextView 
+			android:id="@+id/lblDraws"
+			android:visibility="gone"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<TextView 
+			android:id="@+id/lblDefeats"
+			android:visibility="gone"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<TextView 
+			android:id="@+id/lblGoalsScored"
+			android:visibility="gone"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<TextView 
+			android:id="@+id/lblGoalsAgainst"
+			android:visibility="gone"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<TextView 
+			android:id="@+id/lblGoalsSeperator"
+			android:visibility="gone"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<TextView 
+			android:id="@+id/lblGoalsDiff"
+			android:visibility="gone"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
 </RelativeLayout>

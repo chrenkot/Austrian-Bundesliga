@@ -13,14 +13,14 @@ import android.widget.ListView;
 import at.fundev.android.bundesliga.data.StandingsItem;
 import at.fundev.android.bundesliga.ui.StandingsAdapter;
 
-public abstract class Standings extends ListFragment {
+public class StandingsFragment extends ListFragment {
 
 	protected StandingsItem[] items;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.standings, null);
+		return inflater.inflate(R.layout.standings_fragment, null);
 	}
 
 	@Override
@@ -36,13 +36,11 @@ public abstract class Standings extends ListFragment {
 		{
 			this.items = new StandingsItem[10];
 			
-			setArray(items);
+			items.toArray(this.items);
 			
 			setListAdapter(new StandingsAdapter(getActivity(), R.layout.standings_item, this.items));
 		}
 		
 		return;
 	}
-	
-	protected abstract void setArray(ArrayList<StandingsItem> items);
 }

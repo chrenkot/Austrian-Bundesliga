@@ -30,6 +30,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TabHost;
 import at.fundev.android.bundesliga.data.StandingsItem;
@@ -41,12 +44,8 @@ public class StandingsActivity extends FragmentActivity {
 
 		private ProgressDialog progressDialog;
 		
-		private String tag;
-
-		PageFetcherTask(String tag) {
+		PageFetcherTask() {
 			super();
-			
-			this.tag = tag;
 		}
 		
 		@Override
@@ -79,7 +78,7 @@ public class StandingsActivity extends FragmentActivity {
 					String toParse = EntityUtils.toString(response.getEntity());
 					
 					int start = toParse.indexOf(START_TAG);
-					int end = toParse.indexOf(END_TAG);
+					int end = start + toParse.substring(start).indexOf(END_TAG) + END_TAG.length();
 					
 					toParse = toParse.substring(start, end);
 					
@@ -101,12 +100,10 @@ public class StandingsActivity extends FragmentActivity {
 		
 		@Override
 		protected void onPostExecute(InputStream result) {
-			mIsFetching = false;
 			
 			if(result == null)
 			{
 				progressDialog.cancel();
-				buildDialog(tag);
 				mRetryDialog.show();
 				return;
 			}
@@ -122,11 +119,16 @@ public class StandingsActivity extends FragmentActivity {
 				reader.setContentHandler(contentHandler);
 				reader.parse(input);
 				
-				mStandingsItems = contentHandler.getStandingsItems();
+				if(mTabManager.mLastTab.tag.equals(BUNDESLIGA_TAG))
+					mBundesligaItems = contentHandler.getStandingsItems();
+				else
+					mErsteLigaItems = contentHandler.getStandingsItems();
 				
-				setStandingItems(tag, true);
+				setStandingsItems(true);
 				
 				progressDialog.cancel();
+				
+				mIsFetching = false;
 			} catch (NullPointerException e) {
 				Log.e(StandingsActivity.class.getName(), e.getMessage());
 			} catch (IndexOutOfBoundsException e) {
@@ -161,59 +163,87 @@ public class StandingsActivity extends FragmentActivity {
 	
 	private boolean mIsFetching;
 	
-	private ArrayList<StandingsItem> mStandingsItems;
+	private boolean mIsInitialized;
 	
+	private ArrayList<StandingsItem> mBundesligaItems;
 	
-    /** Called when the activity is first created. */
+	private ArrayList<StandingsItem> mErsteLigaItems;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.main);
+        setContentView(R.layout.standings_activity);
+        
         mTabHost = (TabHost)findViewById(android.R.id.tabhost);
         mTabHost.setup();
 
         mTabManager = new TabManager(this, mTabHost, R.id.realtabcontent);
 
         mTabManager.addTab(mTabHost.newTabSpec(BUNDESLIGA_TAG).setIndicator(getString(R.string.bundesLiga), getResources().getDrawable(R.drawable.bundesliga)),
-                BundesligaStandings.class, null);
+                StandingsFragment.class, null);
         mTabManager.addTab(mTabHost.newTabSpec(ERSTELIGA_TAG).setIndicator(getString(R.string.ersteLiga), getResources().getDrawable(R.drawable.ersteliga)),
-        		ErsteLigaStandings.class, null);
+        		StandingsFragment.class, null);
+        
+        mIsInitialized = true;
         
         if (savedInstanceState != null) {
+        	mBundesligaItems = savedInstanceState.getParcelableArrayList(BUNDESLIGA_TAG);
+            mErsteLigaItems = savedInstanceState.getParcelableArrayList(ERSTELIGA_TAG);
             mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
         }
         
-        fetchInformation(BUNDESLIGA_TAG);
-    }
+        buildDialog();
+        
+        fetchOrSet();
+     }
     
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("tab", mTabHost.getCurrentTabTag());
+        outState.putParcelableArrayList(BUNDESLIGA_TAG, mBundesligaItems);
+        outState.putParcelableArrayList(ERSTELIGA_TAG, mErsteLigaItems);
     }
     
-    private void fetchInformation(String tag)
+    private void fetchOrSet() {
+    	if(mTabManager.mLastTab.tag.equals(BUNDESLIGA_TAG))
+        	if(mBundesligaItems == null)
+        		fetchInformation();
+        	else
+        		setStandingsItems(false);
+    	else
+    		if(mErsteLigaItems == null)
+        		fetchInformation();
+        	else
+        		setStandingsItems(false);
+    }
+    
+    private void fetchInformation()
     {
     	if(!mIsFetching)
     	{
     		mIsFetching = true;
-    		PageFetcherTask fetcher = new PageFetcherTask(tag);
-    		if(tag.equals(BUNDESLIGA_TAG))
+    		PageFetcherTask fetcher = new PageFetcherTask();
+    		if(mTabManager.mLastTab.tag.equals(BUNDESLIGA_TAG))
     			fetcher.execute(BUNDESLIGA_URL + BUNDESLIGA_STANDINGS);
     		else
     			fetcher.execute(BUNDESLIGA_URL + ERSTELIGA_STANDINGS);
     	}
     }
     
-    public void setStandingItems(String tag, boolean force)
+    public void setStandingsItems(boolean force)
     {
-    	Standings standings = (Standings) getSupportFragmentManager().findFragmentByTag(tag);
-    	if(standings != null)
-    		standings.setItems(mStandingsItems, force);
+    	if(mTabManager.mLastTab.fragment != null)
+    	{
+    		if(mTabManager.mLastTab.tag.equals(BUNDESLIGA_TAG))
+    			((StandingsFragment)mTabManager.mLastTab.fragment).setItems(mBundesligaItems, force);
+    		else
+    			((StandingsFragment)mTabManager.mLastTab.fragment).setItems(mErsteLigaItems, force);
+    	}
     }
     
-    private void buildDialog(final String tag) {
+    private void buildDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		String dlgTitle = getString(R.string.dlgTitle);
 		String dlgText = getString(R.string.dlgText);
@@ -226,7 +256,7 @@ public class StandingsActivity extends FragmentActivity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				fetchInformation(tag);
+				fetchInformation();
 			}
 		});
 		builder.setNegativeButton(btnCancelText, new DialogInterface.OnClickListener() {
@@ -238,6 +268,24 @@ public class StandingsActivity extends FragmentActivity {
 
 		mRetryDialog = builder.create();
 	}
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.standings_menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+	        case R.id.standings_refresh:
+	        	fetchInformation();
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+        }
+    }
     
     /**
      * This is a helper class that implements a generic mechanism for
@@ -336,9 +384,10 @@ public class StandingsActivity extends FragmentActivity {
                 mLastTab = newTab;
                 ft.commit();
                 mActivity.getSupportFragmentManager().executePendingTransactions();
-                if(((StandingsActivity)mActivity).mStandingsItems != null)
-                	((StandingsActivity)mActivity).setStandingItems(newTab.tag, false);
-            }
+                
+                if(((StandingsActivity)mActivity).mIsInitialized)
+                	((StandingsActivity)mActivity).fetchOrSet();
+             }
         }
     }
 }

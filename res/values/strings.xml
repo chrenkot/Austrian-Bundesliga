@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Austrian Bundesliga</string>
+    <string name="bundesLiga">Bundesliga</string>
+    <string name="ersteLiga">Erste Liga</string>
+    <string name="downloadInformation">Downloading information...</string>
+    <string name="dlgTitle">Error</string>
+    <string name="dlgText">There was an error fetching the required information from the internet. Try again?</string>
+    <string name="dlgRetry">Retry</string>
+    <string name="dlgCancel">Cancel</string>
+    <string name="games">Pld</string>
+    <string name="points">Pts</string>
+</resources>

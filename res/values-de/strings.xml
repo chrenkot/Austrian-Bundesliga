@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Österreichische Bundesliga</string>
+    <string name="downloadInformation">Lade Informationen...</string>
+    <string name="dlgTitle">Fehler</string>
+    <string name="dlgText">Beim Laden der erforderlichen Daten aus dem Internet ist ein Fehler aufgetreten. Erneut versuchen?</string>
+    <string name="dlgRetry">Wiederholen</string>
+    <string name="dlgCancel">Abbrechen</string>
+    <string name="games">Sp.</string>
+    <string name="points">P</string>
+</resources>
